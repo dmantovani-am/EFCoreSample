@@ -2,16 +2,18 @@
 using Microsoft.EntityFrameworkCore.Design;
 using System.ComponentModel.DataAnnotations;
 
-const string connectionString = @"Data Source=..\..\..\UPO.db;";
+//const string connectionString = @"Data Source=..\..\..\UPO.db;";
+const string connectionString = "Host=localhost; Database=UPO; Username=postgres; Password=Pa$$w0rd;";
 
 DbContextOptions<DataContext> options = new DbContextOptionsBuilder<DataContext>()
-    .UseSqlite(connectionString)
+    //.UseSqlite(connectionString)
+    .UseNpgsql(connectionString)
     .Options;
 
 using var db = new DataContext(options);
 //await db.Database.EnsureCreatedAsync();
 
-//await Insert();
+await Insert();
 //await Query();
 //await Update();
 //await Delete();
@@ -79,7 +81,7 @@ public record Studente
 
     required public string Cognome { get; set; }
 
-    //public double MediaVoti { get; set; }
+    public double MediaVoti { get; set; }
 }
 
 public class DataContextFactory : IDesignTimeDbContextFactory<DataContext>
@@ -87,7 +89,8 @@ public class DataContextFactory : IDesignTimeDbContextFactory<DataContext>
     public DataContext CreateDbContext(string[] args)
     {
         var optionsBuilder = new DbContextOptionsBuilder<DataContext>();
-        optionsBuilder.UseSqlite("Data Source=blog.db");
+        //optionsBuilder.UseSqlite("Data Source=UPO.db");
+        optionsBuilder.UseNpgsql("Host=localhost; Database=UPO; Username=postgres; Password=Pa$$w0rd;");
 
         return new DataContext(optionsBuilder.Options);
     }
